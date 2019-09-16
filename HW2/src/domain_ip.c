@@ -7,7 +7,7 @@
 #include<arpa/inet.h>
 #include <errno.h>
 #include "../lib/domain_ip.h"
-// int count_alias = 0;
+
 // Check number between 0 and 256
 int check_number(char *ip_part) {
     int number = atoi(ip_part);
@@ -17,7 +17,9 @@ int check_number(char *ip_part) {
     return 1;
 }
 
-// Check ip address when input params from terminal
+// Check ip address 
+// return 1 for true ip address
+// return 0 for not
 int ip_valid(char *ip) {
     char str[40];
     strcpy(str, ip);
@@ -42,17 +44,21 @@ int ip_valid(char *ip) {
     return 1;
 }
 
+// Input hostname, print out IP, alias IP
+
 void get_ip(char * hostname) 
 {   
     struct hostent *he;     
     struct in_addr **addr_list;     
     int i;     
     if ( (he = gethostbyname( hostname ) ) == NULL)     
-    { 
+    {
+        // if not a hostname, print out fail
         //herror("gethostbyname");
         printf("Not found information\n");         
     }
     else{  
+        // Print out all alias
         addr_list = (struct in_addr **) he->h_addr_list;
         for(i = 0; addr_list[i] != NULL; i++) {
             if (i==0) {
@@ -69,6 +75,10 @@ void get_ip(char * hostname)
     }
 
 }
+
+// Input IP, print out hostname and alias
+
+
 void get_info_ip_address(char *ipAddress) {
     struct in_addr addr;
     inet_aton(ipAddress, &addr);
